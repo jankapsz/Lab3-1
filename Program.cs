@@ -173,9 +173,9 @@ namespace GrafikaSzeminarium
         {
             // NO OpenGL
             // make it threadsafe
-            cubeArrangementModel.AdvanceTime(deltaTime);
+            //cubeArrangementModel.AdvanceTime(deltaTime);
 
-            imGuiController.Update((float)deltaTime);
+            //imGuiController.Update((float)deltaTime);
         }
 
         private static unsafe void GraphicWindow_Render(double deltaTime)
@@ -207,9 +207,9 @@ namespace GrafikaSzeminarium
             Matrix4X4<float> roty = Matrix4X4.CreateRotationY((float)cubeArrangementModel.DiamondCubeLocalAngle);
             Matrix4X4<float> trans = Matrix4X4.CreateTranslation(1f, 1f, 0f);
             Matrix4X4<float> rotGlobalY = Matrix4X4.CreateRotationY((float)cubeArrangementModel.DiamondCubeGlobalYAngle);
-            Matrix4X4<float> dimondCubeModelMatrix = diamondScale * rotx * rotz * roty * trans * rotGlobalY;
-            SetModelMatrix(dimondCubeModelMatrix);
-            DrawModelObject(cube);
+            Matrix4X4<float> diamondCubeModelMatrix = diamondScale * rotx * rotz * roty * trans * rotGlobalY;
+            //SetModelMatrix(diamondCubeModelMatrix);
+            //DrawModelObject(cube);
 
             //ImGuiNET.ImGui.ShowDemoWindow();
             ImGuiNET.ImGui.Begin("Lighting", ImGuiNET.ImGuiWindowFlags.AlwaysAutoResize | ImGuiNET.ImGuiWindowFlags.NoCollapse);

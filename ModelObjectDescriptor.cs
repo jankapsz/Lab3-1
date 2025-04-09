@@ -28,41 +28,10 @@ namespace GrafikaSzeminarium
 
             // counter clockwise is front facing
             float[] vertexArray = new float[] {
-                // top face
-                -0.5f, 0.5f, 0.5f, 0f, 1f, 0f,
-                0.5f, 0.5f, 0.5f, 0f, 1f, 0f,
-                0.5f, 0.5f, -0.5f, 0f, 1f, 0f,
-                -0.5f, 0.5f, -0.5f, 0f, 1f, 0f, 
-
-                // front face
-                -0.5f, 0.5f, 0.5f, 0f, 0f, 1f,
-                -0.5f, -0.5f, 0.5f, 0f, 0f, 1f,
-                0.5f, -0.5f, 0.5f, 0f, 0f, 1f,
-                0.5f, 0.5f, 0.5f, 0f, 0f, 1f,
-
-                // left face
-                -0.5f, 0.5f, 0.5f, -1f, 0f, 0f,
-                -0.5f, 0.5f, -0.5f, -1f, 0f, 0f,
-                -0.5f, -0.5f, -0.5f, -1f, 0f, 0f,
-                -0.5f, -0.5f, 0.5f, -1f, 0f, 0f,
-
-                // bottom face
-                -0.5f, -0.5f, 0.5f, 0f, -1f, 0f,
-                0.5f, -0.5f, 0.5f,0f, -1f, 0f,
-                0.5f, -0.5f, -0.5f,0f, -1f, 0f,
-                -0.5f, -0.5f, -0.5f,0f, -1f, 0f,
-
-                // back face
-                0.5f, 0.5f, -0.5f, 0f, 0f, -1f,
-                -0.5f, 0.5f, -0.5f,0f, 0f, -1f,
-                -0.5f, -0.5f, -0.5f,0f, 0f, -1f,
-                0.5f, -0.5f, -0.5f,0f, 0f, -1f,
-
-                // right face
-                0.5f, 0.5f, 0.5f, 1f, 0f, 0f,
-                0.5f, 0.5f, -0.5f,1f, 0f, 0f,
-                0.5f, -0.5f, -0.5f,1f, 0f, 0f,
-                0.5f, -0.5f, 0.5f,1f, 0f, 0f,
+                -0.5f, 1.0f, 0f, 0f, 0f, 1f,
+                -0.5f, -1.0f, 0f, 0f, 0f, 1f,
+                0.5f, -1.0f, 0f, 0f, 0f, 1f,
+                0.5f, 1.0f, 0f, 0f, 0f, 1f,
             };
 
             float[] colorArray = new float[] {
@@ -70,31 +39,6 @@ namespace GrafikaSzeminarium
                 1.0f, 0.0f, 0.0f, 1.0f,
                 1.0f, 0.0f, 0.0f, 1.0f,
                 1.0f, 0.0f, 0.0f, 1.0f,
-
-                0.0f, 1.0f, 0.0f, 1.0f,
-                0.0f, 1.0f, 0.0f, 1.0f,
-                0.0f, 1.0f, 0.0f, 1.0f,
-                0.0f, 1.0f, 0.0f, 1.0f,
-
-                0.0f, 0.0f, 1.0f, 1.0f,
-                0.0f, 0.0f, 1.0f, 1.0f,
-                0.0f, 0.0f, 1.0f, 1.0f,
-                0.0f, 0.0f, 1.0f, 1.0f,
-
-                1.0f, 0.0f, 1.0f, 1.0f,
-                1.0f, 0.0f, 1.0f, 1.0f,
-                1.0f, 0.0f, 1.0f, 1.0f,
-                1.0f, 0.0f, 1.0f, 1.0f,
-
-                0.0f, 1.0f, 1.0f, 1.0f,
-                0.0f, 1.0f, 1.0f, 1.0f,
-                0.0f, 1.0f, 1.0f, 1.0f,
-                0.0f, 1.0f, 1.0f, 1.0f,
-
-                1.0f, 1.0f, 0.0f, 1.0f,
-                1.0f, 1.0f, 0.0f, 1.0f,
-                1.0f, 1.0f, 0.0f, 1.0f,
-                1.0f, 1.0f, 0.0f, 1.0f,
             };
 
             uint[] indexArray = new uint[] {
