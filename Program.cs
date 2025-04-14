@@ -3,6 +3,7 @@ using Silk.NET.Maths;
 using Silk.NET.OpenGL;
 using Silk.NET.OpenGL.Extensions.ImGui;
 using Silk.NET.Windowing;
+using System.Drawing;
 using System.Dynamic;
 using System.Numerics;
 using System.Reflection;
@@ -18,7 +19,9 @@ namespace GrafikaSzeminarium
 
         private static ImGuiController imGuiController;
 
-        private static ModelObjectDescriptor cube;
+        private static ModelObjectDescriptor plank;
+        private static ModelObjectDescriptor roundPlank;
+        private static double dezsaRadius;
 
         private static CameraDescriptor camera = new CameraDescriptor();
 
@@ -57,7 +60,7 @@ namespace GrafikaSzeminarium
 
         private static void GraphicWindow_Closing()
         {
-            cube.Dispose();
+            plank.Dispose();
             Gl.DeleteProgram(program);
         }
 
@@ -82,12 +85,14 @@ namespace GrafikaSzeminarium
 
             imGuiController = new ImGuiController(Gl, graphicWindow, inputContext);
 
-            cube = ModelObjectDescriptor.CreateCube(Gl);
+            plank = ModelObjectDescriptor.CreateCube(Gl, false);
+            roundPlank = ModelObjectDescriptor.CreateCube(Gl, true);
+            dezsaRadius = dezsaRadiusCalculator(plank.plankWidth, 10.0);
 
             Gl.ClearColor(System.Drawing.Color.White);
             
-            Gl.Enable(EnableCap.CullFace);
-            Gl.CullFace(TriangleFace.Back);
+            //Gl.Enable(EnableCap.CullFace);
+            //Gl.CullFace(TriangleFace.Back);
 
             Gl.Enable(EnableCap.DepthTest);
             Gl.DepthFunc(DepthFunction.Lequal);
@@ -185,8 +190,15 @@ namespace GrafikaSzeminarium
 
             Gl.UseProgram(program);
 
+            Vector3 lightPosition = new Vector3(
+            camera.Position.X * 1.2f,  // Slightly farther than camera
+            camera.Position.Y * 1.2f,  // to ensure it's outside
+            camera.Position.Z * 1.2f
+            );
+
             SetUniform3(LightColorVariableName, new Vector3(1f, 1f, 1f));
-            SetUniform3(LightPositionVariableName, new Vector3(0f, 1.2f, 0f));
+            //SetUniform3(LightPositionVariableName, new Vector3(0f, 2.5f, 0f));
+            SetUniform3(LightPositionVariableName, lightPosition);
             SetUniform3(ViewPositionVariableName, new Vector3(camera.Position.X, camera.Position.Y, camera.Position.Z));
             SetUniform1(ShinenessVariableName, shininess);
 
@@ -197,19 +209,24 @@ namespace GrafikaSzeminarium
             SetMatrix(projectionMatrix, ProjectionMatrixVariableName);
 
 
-            var modelMatrixCenterCube = Matrix4X4.CreateScale((float)cubeArrangementModel.CenterCubeScale);
-            SetModelMatrix(modelMatrixCenterCube);
-            DrawModelObject(cube);
+            var translation = Matrix4X4.CreateTranslation(0, 0, (float)dezsaRadius);
+            var flatTranslation = Matrix4X4.CreateTranslation(0, 3f, 0);
+            var roundTranslation = Matrix4X4.CreateTranslation(0, -3f, 0);
 
-            Matrix4X4<float> diamondScale = Matrix4X4.CreateScale(0.25f);
-            Matrix4X4<float> rotx = Matrix4X4.CreateRotationX((float)Math.PI / 4f);
-            Matrix4X4<float> rotz = Matrix4X4.CreateRotationZ((float)Math.PI / 4f);
-            Matrix4X4<float> roty = Matrix4X4.CreateRotationY((float)cubeArrangementModel.DiamondCubeLocalAngle);
-            Matrix4X4<float> trans = Matrix4X4.CreateTranslation(1f, 1f, 0f);
-            Matrix4X4<float> rotGlobalY = Matrix4X4.CreateRotationY((float)cubeArrangementModel.DiamondCubeGlobalYAngle);
-            Matrix4X4<float> diamondCubeModelMatrix = diamondScale * rotx * rotz * roty * trans * rotGlobalY;
-            //SetModelMatrix(diamondCubeModelMatrix);
-            //DrawModelObject(cube);
+            for (int i = 0; i < 18; i++)
+            {
+                var rotation = Matrix4X4.CreateRotationY((float)(i * Math.PI / 9));
+                var barrelForm = translation * rotation;
+
+                var modelMatrix = barrelForm * flatTranslation;
+                SetModelMatrix(modelMatrix);
+                DrawModelObject(plank);
+
+                modelMatrix = barrelForm * roundTranslation;
+                SetModelMatrix(modelMatrix);
+                DrawModelObject(roundPlank);
+            }
+
 
             //ImGuiNET.ImGui.ShowDemoWindow();
             ImGuiNET.ImGui.Begin("Lighting", ImGuiNET.ImGuiWindowFlags.AlwaysAutoResize | ImGuiNET.ImGuiWindowFlags.NoCollapse);
@@ -295,6 +312,11 @@ namespace GrafikaSzeminarium
             var error = (ErrorCode)Gl.GetError();
             if (error != ErrorCode.NoError)
                 throw new Exception("GL.GetError() returned " + error.ToString());
+        }
+
+        public static double dezsaRadiusCalculator(double lapSzelesseg, double szog)
+        {
+            return (lapSzelesseg / 2.0) / Math.Tan(szog * Math.PI / 180.0);
         }
     }
 }
